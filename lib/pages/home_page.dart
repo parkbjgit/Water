@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true, // 타이틀을 가운데 정렬
         // 타이틀 텍스트의 색 변경
         backgroundColor: const Color(0xFF1C1B1F), // AppBar 색상을 배경색과 맞춤
+
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
