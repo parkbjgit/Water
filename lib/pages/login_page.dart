@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginSignupPage extends StatefulWidget {
+class LoginSignupPage extends StatefulWidget {  //테스트용 주석
   @override
   _LoginSignupPageState createState() => _LoginSignupPageState();
 }
