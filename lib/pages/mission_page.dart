@@ -102,8 +102,8 @@ class _MissionPageState extends State<MissionPage> {
           children: [
             ListView(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
+                Padding(    // TODO 위치 수정
+                  padding: const EdgeInsets.symmetric(horizontal: 100.0),
                   child: Text('일일 미션',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -111,6 +111,7 @@ class _MissionPageState extends State<MissionPage> {
                 ...dailyMissions.map((mission) {
                   String missionTitle = mission['title']!;
                   return CheckboxListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 100),
                     title: Text(missionTitle),
                     subtitle: Text(mission['description']!),
                     value: missionStatus[missionTitle],
@@ -126,7 +127,7 @@ class _MissionPageState extends State<MissionPage> {
                   );
                 }).toList(),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 100),
                   child: Text('월간 미션',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -134,6 +135,7 @@ class _MissionPageState extends State<MissionPage> {
                 ...monthlyMissions.map((mission) {
                   String missionTitle = mission['title']!;
                   return CheckboxListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 100),
                     title: Text(missionTitle),
                     subtitle: Text(mission['description']!),
                     value: missionStatus[missionTitle],
