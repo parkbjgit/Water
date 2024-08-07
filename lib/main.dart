@@ -14,9 +14,12 @@ import 'pages/leaderboard_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/login_page.dart';
 import 'pages/map_page.dart'; // 지도 페이지 임포트
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
 
   // 위치 권한 요청
   //await requestLocationPermission(); // 추가된 부분
