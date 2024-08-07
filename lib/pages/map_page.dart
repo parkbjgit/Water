@@ -257,7 +257,7 @@ class _MapPageState extends State<MapPage> {
       body: FlutterMap(
         mapController: _mapController,
         options: MapOptions(
-          initialCenter: LatLng(36.5, 127.5),
+          initialCenter: LatLng(36.5, 127.5), 
           initialZoom: 13.0,
           // initialInteractiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
           onTap: (tapPosition, point) {
@@ -279,7 +279,7 @@ class _MapPageState extends State<MapPage> {
                   point: LatLng(36.5, 127.5),
                   width: 80,
                   height: 80,
-                  builder: (ctx) => Icon(Icons.my_location, color: Colors.red),
+                  child: Icon(Icons.location_on,color: Colors.red,size: 40.0),
                 ),
               ],
             ),
