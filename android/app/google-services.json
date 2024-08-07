@@ -37,6 +37,49 @@
             {
               "client_id": "498676210174-gf4es1o4v6tkfbnfvtfni8ds73gcvmdt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "498676210174-dt4610ckq2uu109rim3ig276ro0qj7a4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNewApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498676210174:android:16456a62b98b0b752bc8af",
+        "android_client_info": {
+          "package_name": "com.example.waterssaving"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498676210174-gf4es1o4v6tkfbnfvtfni8ds73gcvmdt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPu0iNiVXvGMVIl5Jb5BN06tOR-XMocJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498676210174-gf4es1o4v6tkfbnfvtfni8ds73gcvmdt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "498676210174-dt4610ckq2uu109rim3ig276ro0qj7a4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myNewApp"
+              }
             }
           ]
         }
