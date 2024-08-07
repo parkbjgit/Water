@@ -9,10 +9,7 @@ build/
 **/build/
 
 # Web related
-web/main.dart.js
-web/main.dart.js.map
-web/flutter_service_worker.js
-web/index.html
+
 
 # IntelliJ related
 .idea/
@@ -57,12 +54,7 @@ DerivedData/
 **/*.lock
 
 # Compiled Dart files
-**/*.js
-**/*.js_
-**/*.css
-**/*.html
-**/*.png
-**/*.svg
+
 
 # Unit test coverage
 coverage/
