@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "498676210174",
+    "project_id": "water-d6543",
+    "storage_bucket": "water-d6543.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498676210174:android:14039618282fb7e52bc8af",
+        "android_client_info": {
+          "package_name": "com.company.water"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498676210174-gf4es1o4v6tkfbnfvtfni8ds73gcvmdt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPu0iNiVXvGMVIl5Jb5BN06tOR-XMocJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498676210174-gf4es1o4v6tkfbnfvtfni8ds73gcvmdt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
