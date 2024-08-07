@@ -276,7 +276,7 @@ class _MapPageState extends State<MapPage> {
             MarkerLayer(
               markers: [
                 Marker(
-                  point: LatLng(36.5, 127.5),
+                  point: _currentPosition!,
                   width: 80,
                   height: 80,
                   child: Icon(Icons.location_on,color: Colors.red,size: 40.0),
