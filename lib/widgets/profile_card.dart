@@ -19,9 +19,8 @@ class ProfileCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0), // 패딩 조정
-            child: Column(
+          margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
+          child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
@@ -76,15 +75,14 @@ class ProfileCard extends StatelessWidget {
                 SizedBox(height: 8), // 간격 조정
                 Text(
                   '레벨: ${treeManager.tree.level}',
-                  style: TextStyle(fontSize: 14), // 글자 크기 조정
+                  style: TextStyle(fontSize: 10), // 글자 크기 조정
                 ),
                 Text(
                   '경험치: ${treeManager.tree.experience} / 3500',
-                  style: TextStyle(fontSize: 14), // 글자 크기 조정
+                  style: TextStyle(fontSize: 10), // 글자 크기 조정
                 ),
               ],
             ),
-          ),
         );
       },
     );

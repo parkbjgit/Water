@@ -9,14 +9,16 @@ class HomePage extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('홈', style: TextStyle(color: Colors.white)), // 타이틀 텍스트 색상을 흰색으로 설정
+        // title: const Text('홈', style: TextStyle(color: Colors.white)), // 타이틀 텍스트 색상을 흰색으로 설정
+        title: const Text('홈'), 
         centerTitle: true, // 타이틀을 가운데 정렬
         // 타이틀 텍스트의 색 변경
-        backgroundColor: const Color(0xFF1C1B1F), // AppBar 색상을 배경색과 맞춤
+        // backgroundColor: const Color(0xFF1C1B1F), // AppBar 색상을 배경색과 맞춤
+
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-        color: const Color(0xFF1C1B1F), // 배경색을 1C1B1F로 설정
+        // color: const Color(0xFF1C1B1F), // 배경색을 1C1B1F로 설정
         child: Center(
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -61,7 +63,8 @@ class HomePage extends StatelessWidget {
         Navigator.of(context).pushNamed(route);
       },
       child: Card(
-        color: Colors.grey[850], // 카드 배경색을 어두운 회색으로 설정
+        // color: Colors.grey[850], // 카드 배경색을 어두운 회색으로 설정
+        color: const Color.fromARGB(255, 255, 255, 255),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -69,13 +72,15 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 30, color: Colors.white), // 아이콘 색상을 흰색으로 설정
+            // Icon(icon, size: 30, color: Colors.white), // 아이콘 색상을 흰색으로 설정
+            Icon(icon, size: 30),
             const SizedBox(height: 5),
             Text(label,
                 style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white)), // 텍스트 색상을 흰색으로 설정
+                    // color: Colors.white)), // 텍스트 색상을 흰색으로 설정
+                )),
             const SizedBox(height: 5),
             Text(description,
                 style: const TextStyle(fontSize: 10, color: Colors.white70),
