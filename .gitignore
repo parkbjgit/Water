@@ -1,0 +1,83 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/build/
+
+# Web related
+web/main.dart.js
+web/main.dart.js.map
+web/flutter_service_worker.js
+web/index.html
+
+# IntelliJ related
+.idea/
+*.iml
+
+# VS Code related
+.vscode/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Android related
+.android/
+gradle.properties
+local.properties
+**/*.jks
+
+# iOS related
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Flutter.podspec.lock
+ios/Flutter/Generated.xcconfig
+ios/Flutter/FlutterPluginRegistrant/
+
+# Xcode related
+**/*.xcworkspace/
+**/*.xcuserdata/
+**/*.xcuserstate
+**/*.xcconfig
+**/*.hmap
+**/*.moved-aside
+DerivedData/
+.idea/
+.Packages/
+*.xcodeproj/
+
+# Dart/Flutter specific
+**/packages
+**/doc/api/
+
+# Obfuscation files
+**/*.lock
+
+# Compiled Dart files
+**/*.js
+**/*.js_
+**/*.css
+**/*.html
+**/*.png
+**/*.svg
+
+# Unit test coverage
+coverage/
+
+# JetBrains related
+.idea/
+*.iml
+*.ipr
+
+# MacOS related
+.DS_Store
+
+# Windows related
+Thumbs.db
+desktop.ini
+
+# Linux related
+*.swp
