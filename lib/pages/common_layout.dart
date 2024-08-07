@@ -25,12 +25,12 @@ class _CommonLayoutState extends State<CommonLayout> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFF1C1B1F),
               ),
               child: ProfileCard(), // 프로필 카드 추가
             ),
-            SizedBox(height: 16), // 헤더와 아이템 사이의 간격 추가
+            const SizedBox(height: 16), // 헤더와 아이템 사이의 간격 추가
             _buildDrawerItem(Icons.assignment, '미션', '/mission'),
             _buildDrawerItem(Icons.quiz, '퀴즈', '/quiz'),
             _buildDrawerItem(Icons.local_florist, '가상 정원', '/garden'),
@@ -54,7 +54,7 @@ class _CommonLayoutState extends State<CommonLayout> {
                   builder: (context, scoreManager, child) {
                     return Text(
                       '내 보유 포인트: ${scoreManager.totalPoints}',
-                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      style: const TextStyle(fontSize: 16, color: Colors.black),
                     );
                   },
                 ),
@@ -71,14 +71,14 @@ class _CommonLayoutState extends State<CommonLayout> {
               child: Container(
                 width: 48,
                 height: 48,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(24),
                     bottomRight: Radius.circular(24),
                   ),
                 ),
-                child: Icon(Icons.arrow_forward, color: Colors.white),
+                child: const Icon(Icons.arrow_forward, color: Colors.white),
               ),
             ),
           ),

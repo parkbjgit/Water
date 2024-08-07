@@ -53,11 +53,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '퀴즈 앱',
+      title: 'water-saving',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'BMHANNA', // 글로벌 폰트 설정
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           displayLarge: TextStyle(
               fontSize: 32.0,
               fontWeight: FontWeight.bold,
@@ -97,12 +97,12 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/quiz': (context) => QuizPage(),
         '/reward': (context) => RewardPage(),
-        '/garden': (context) => GardenPage(),
+        '/garden': (context) => const GardenPage(),
         '/mission': (context) => MissionPage(),
-        '/water_usage': (context) => WaterUsagePage(),
+        '/water_usage': (context) => const WaterUsagePage(),
         '/map': (context) => MapPage(), // 지도 페이지 경로 설정
         '/login': (context) => LoginSignupPage(),
-        '/leaderboard': (context) => LeaderboardPage(), // 리더보드 페이지 경로 설정
+        '/leaderboard': (context) => const LeaderboardPage(), // 리더보드 페이지 경로 설정
         '/profile': (context) => ProfilePage(),
       },
     );
