@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "498676210174-l63cula4j9fstslh4dr4ar45jefcc75e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.water",
+            "certificate_hash": "45107236bef4750044c93cce6c399c01cc3b8fe4"
+          }
+        },
+        {
           "client_id": "498676210174-gf4es1o4v6tkfbnfvtfni8ds73gcvmdt.apps.googleusercontent.com",
           "client_type": 3
         }
