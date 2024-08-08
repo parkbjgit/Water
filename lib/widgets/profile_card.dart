@@ -19,12 +19,14 @@ class ProfileCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
+          margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
           child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Padding(padding: EdgeInsets.all(10)),
                 Row(
                   children: [
+                    Padding(padding: EdgeInsets.all(10)),
                     if (treeManager.tree.level == 0)
                       Lottie.asset(
                         'assets/animation_cry.json',
