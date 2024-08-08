@@ -79,7 +79,10 @@ class _GardenPageState extends State<GardenPage> {
     return CommonLayout(
       selectedIndex: 2,
       child: Scaffold(
-        backgroundColor: Colors.blue.shade50,
+        backgroundColor: Colors.blue[50],
+        // appBar: AppBar(
+        //   title: const Text('가상 정원'),
+        // ),
         body: Stack(
           children: [
             Column(
@@ -290,41 +293,51 @@ class _GardenPageState extends State<GardenPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('경고'),
-          content:const Text(‘진화 아이템이 없습니다.’),
-actions: [
-TextButton(
-child: const Text(‘확인’),
-onPressed: () {
-Navigator.of(context).pop();
-},
-),
-],
-);
-},
-);
-}
+          content: const Text('진화 아이템이 없습니다.'),
+          actions: [
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-void _showMaxLevelWarning(BuildContext context) {
-showDialog(
-context: context,
-builder: (BuildContext context) {
-return AlertDialog(
-title: const Text(‘경고’),
-content: const Text(‘더 이상 진화할 수 없습니다.’),
-actions: [
-TextButton(
-child: const Text(‘확인’),
-onPressed: () {
-Navigator.of(context).pop();
-},
-),
-],
-);
-},
-);
-}
+  void _showMaxLevelWarning(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('경고'),
+          content: const Text('더 이상 진화할 수 없습니다.'),
+          actions: [
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-void _harvest() async {
-setState(() {
-_showHarvestAnimation = true;
-});
+  void _harvest() async {
+    setState(() {
+      _showHarvestAnimation = true;
+    });
+    await Future.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      Provider.of<ScoreManager>(context, listen: false).addApple();
+      Provider.of<TreeManager>(context, listen: false).resetTree();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('사과를 1개 수확했습니다!'),
+      ));
+    }
+  }
+}
