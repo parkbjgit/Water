@@ -35,6 +35,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     });
 
     return CommonLayout(
+      selectedIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('리더보드'),

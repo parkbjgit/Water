@@ -1,10 +1,7 @@
-import 'package:Water/pages/garden_page.dart';
-import 'package:Water/pages/map_page.dart';
-import 'package:Water/pages/mission_page.dart';
-import 'package:Water/pages/profile_page.dart';
-import 'package:Water/pages/quiz_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'common_layout.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,31 +12,12 @@ class _HomePageState extends State<HomePage> {
   DateTime selectedDate = DateTime.now();
   final dayLabels = ['월', '화', '수', '목', '금', '토', '일'];
 
-  int _selectedIndex = 0;
-
   List<DateTime> _getWeekDates(DateTime now) {
     List<DateTime> weekDates = [];
     for (int i = 0; i < 7; i++) {
       weekDates.add(now.subtract(Duration(days: now.weekday - 1 - i)));
     }
     return weekDates;
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-    } else if (index == 1) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => QuizPage()));
-    } else if (index == 2) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => GardenPage()));
-    } else if (index == 3) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage()));
-    } else if (index == 4) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-    }
   }
 
   @override
@@ -50,24 +28,14 @@ class _HomePageState extends State<HomePage> {
 
     List<DateTime> weekDates = _getWeekDates(now);
 
-    return Scaffold(
-      backgroundColor: Colors.blue.shade50, // 배경색을 여기에 설정
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          '홈',
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        // color: Colors.grey[200], // 배경색 설정
+    return CommonLayout(
+      selectedIndex: 0,
+      child: Container(
+        color: Colors.blue.shade50, // 배경색을 여기에 설정
         child: ListView(
           children: [
             // 상단 알림 배너
             Container(
-              // color: Colors.brown[100],
               color: Colors.blue[50],
               padding: EdgeInsets.all(8),
               child: Row(
@@ -166,21 +134,6 @@ class _HomePageState extends State<HomePage> {
             // 아래 섹션은 반복되는 형태로 추가 가능
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.assignment), label: '미션'),
-          BottomNavigationBarItem(icon: Icon(Icons.quiz), label: '퀴즈'),
-          BottomNavigationBarItem(icon: Icon(Icons.local_florist), label: '가상 정원'),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: '지도'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: '프로필'),
-        ],
-        onTap: _onItemTapped,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
       ),
     );
   }

@@ -8,6 +8,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
+      selectedIndex: 4,
       child: Stack(
         children: [
           Center(

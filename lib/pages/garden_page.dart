@@ -77,6 +77,7 @@ class _GardenPageState extends State<GardenPage> {
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
+      selectedIndex: 2,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('가상 정원'),

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:Water/pages/common_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -250,7 +251,10 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CommonLayout(
+      selectedIndex: 3,
+      child:
+        Scaffold(
       appBar: AppBar(
         title: Text('지도 페이지'),
       ),
@@ -285,6 +289,7 @@ class _MapPageState extends State<MapPage> {
             ),
         ],
       ),
+    )
     );
   }
 }

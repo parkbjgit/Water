@@ -143,6 +143,7 @@ class _WaterUsagePageState extends State<WaterUsagePage> {
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
+      selectedIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('물 사용량 기록'),

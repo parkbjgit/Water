@@ -61,6 +61,7 @@ class _RewardPageState extends State<RewardPage> {
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
+      selectedIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           title: Text('포인트 및 리워드'),

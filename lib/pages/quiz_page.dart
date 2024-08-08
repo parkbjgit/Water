@@ -135,6 +135,7 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
+      selectedIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           title: Text('물 절약 퀴즈'),

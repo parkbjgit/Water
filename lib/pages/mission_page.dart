@@ -94,6 +94,7 @@ class _MissionPageState extends State<MissionPage> {
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
+      selectedIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           title: Text('물 절약 미션'),
