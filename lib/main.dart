@@ -14,9 +14,15 @@ import 'pages/leaderboard_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/login_page.dart';
 import 'pages/map_page.dart'; // 지도 페이지 임포트
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // 위치 권한 요청
   //await requestLocationPermission(); // 추가된 부분
@@ -101,7 +107,7 @@ class MyApp extends StatelessWidget {
         '/mission': (context) => MissionPage(),
         '/water_usage': (context) => const WaterUsagePage(),
         '/map': (context) => MapPage(), // 지도 페이지 경로 설정
-        '/login': (context) => LoginSignupPage(),
+        '/login': (context) => LoginScreen(),
         '/leaderboard': (context) => const LeaderboardPage(), // 리더보드 페이지 경로 설정
         '/profile': (context) => ProfilePage(),
       },
