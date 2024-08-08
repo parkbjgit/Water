@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
         '/mission': (context) => MissionPage(),
         '/water_usage': (context) => const WaterUsagePage(),
         '/map': (context) => MapPage(), // 지도 페이지 경로 설정
-        '/login': (context) => LoginScreen(),
+        '/login': (context) => LoginPage(),
         '/leaderboard': (context) => const LeaderboardPage(), // 리더보드 페이지 경로 설정
         '/profile': (context) => ProfilePage(),
       },

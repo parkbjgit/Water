@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -26,6 +27,28 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+  
+Future<void> _signOut() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    // 로그인 상태가 해제되었는지 확인
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      setState(() {
+        _errorMessage = 'Successfully signed out';
+      });
+    } else {
+      setState(() {
+        _errorMessage = 'Error signing out';
+      });
+    }
+  } catch (e) {
+    setState(() {
+      _errorMessage = 'Error signing out: ${e.toString()}';
+    });
+  }
+}
+
 
   Future<UserCredential> signInWithGoogle() async {
   // Create a new provider
@@ -40,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
   return await FirebaseAuth.instance.signInWithPopup(googleProvider);
 
   // Or use signInWithRedirect
-  // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
+  //return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
 }
 
   @override
@@ -75,6 +98,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: signInWithGoogle,
                   child: Text('Sign in with Google'),
                 ),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: _signOut,
+                  child: Text('Sign Out'),
+                ),
+
                 if (_errorMessage.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
