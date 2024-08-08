@@ -1,38 +1,19 @@
 import 'package:flutter/material.dart';
 
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: HomePage(),
-//     );
-//   }
-// }
-
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
+void main() {
+  runApp(MyApp());
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
+class MyApp extends StatelessWidget {
   @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomePage(),
+    );
   }
+}
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,92 +21,140 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text('2ulip', style: TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold)),
+        title: Text(
+          '홈',
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          TabBar(
-            controller: _tabController,
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
-            indicatorColor: Colors.black,
-            tabs: [
-              Tab(text: '새로운 매치'),
-              Tab(text: '히스토리'),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                ListView(
-                  children: [
-                    _buildListItem('연애할 때, 얼마나 자주 연락하는 게 좋나요?'),
-                    _buildListItem('사랑하는 사람이 생긴다면, 결혼도 생각하게 될까요?'),
-                    _buildListItem('결혼/출산 후 여자의 커리어는 어떠야 한다고 생각하나요?'),
-                    _buildListItem('일과 가족 사이 우선순위는 어떻으면 하나요?'),
-                    _buildListItem('평소 새로운 지식, 기술을 배우는 자기계발을 따로 하고 있나요?'),
-                  ],
-                ),
-                Center(child: Text('히스토리 탭의 내용')),
-              ],
+      body: Container(
+        color: Colors.grey[200], // 배경색 설정
+        child: ListView(
+          children: [
+            // 상단 알림 배너
+            Container(
+              color: Colors.brown[100],
+              padding: EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('💡 내 월경 전 PMS 증상은?', style: TextStyle(color: Colors.brown)),
+                  Icon(Icons.close, color: Colors.brown),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text('SEARCH!free'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                    textStyle: TextStyle(fontSize: 16),
+            // 날짜 선택기와 캘린더
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('6월 25일, 오늘', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(child: _buildDateCircle('일', '23')),
+                      Expanded(child: _buildDateCircle('월', '24')),
+                      Expanded(child: _buildDateCircle('화', '25', isSelected: true)),
+                      Expanded(child: _buildDateCircle('수', '26')),
+                      Expanded(child: _buildDateCircle('목', '27')),
+                      Expanded(child: _buildDateCircle('금', '28')),
+                      Expanded(child: _buildDateCircle('토', '29')),
+                    ],
                   ),
-                ),
-                SizedBox(height: 8),
-                Text('FEELING LUCKY!', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+            SizedBox(height: 8),
+            // 체크박스와 텍스트 입력 필드
+            _buildCard(
+              context,
+              '영양제 먹었나요?',
+              Icons.check_circle_outline,
+              '영양제 먹기',
+              true,
+              '100코인',
+            ),
+            _buildCard(
+              context,
+              '오늘 월경은 어때요?',
+              Icons.add_circle_outline,
+              '기록 추가하기',
+              false,
+            ),
+            // 아래 섹션은 반복되는 형태로 추가 가능
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.nightlight_round), label: '투데이'),
+          BottomNavigationBarItem(icon: Icon(Icons.star_border), label: '고민해결'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: '쇼핑'),
+          BottomNavigationBarItem(icon: Icon(Icons.article), label: '블로그'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: '마이'),
         ],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
       ),
     );
   }
 
-  Widget _buildListItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 3),
-            ),
-          ],
+  Widget _buildDateCircle(String day, String date, {bool isSelected = false}) {
+    return Column(
+      children: [
+        Text(day),
+        SizedBox(height: 4),
+        CircleAvatar(
+          radius: 20,
+          backgroundColor: isSelected ? Colors.brown : Colors.grey[300],
+          child: Text(
+            date,
+            style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+          ),
         ),
-        child: Text(text, style: TextStyle(fontSize: 16)),
+      ],
+    );
+  }
+
+  Widget _buildCard(BuildContext context, String title, IconData icon, String actionText, bool showCheckbox, [String? badge]) {
+    return Container(
+      color: Colors.white,
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              if (badge != null) ...[
+                Spacer(),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(badge, style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ],
+          ),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(icon, size: 40, color: Colors.amber),
+              SizedBox(width: 16),
+              Text(actionText, style: TextStyle(fontSize: 16)),
+              Spacer(),
+              if (showCheckbox) Checkbox(value: true, onChanged: (value) {}),
+            ],
+          ),
+        ],
       ),
     );
   }
