@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
         children: [
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
                 ProfileCard(),
