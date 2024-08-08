@@ -59,7 +59,9 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('$todayDate', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  Text('$todayDate',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(height: 8),
                   Row(
                     children: List.generate(7, (index) {
@@ -73,7 +75,8 @@ class _HomePageState extends State<HomePage> {
                           child: _buildDateCircle(
                             dayLabels[index],
                             weekDates[index].day.toString(),
-                            isSelected: selectedDate.day == weekDates[index].day,
+                            isSelected:
+                                selectedDate.day == weekDates[index].day,
                           ),
                         ),
                       );
@@ -83,51 +86,72 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: 8),
+
+            Container(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                '일간 미션',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+            ),
+
             // 체크박스와 텍스트 입력 필드
             _buildCard(
               context,
-              '샤워 시간을 5분 이하로 줄이세요.',
+              '7분 이하 짧은 샤워하기',
               Icons.check_circle_outline,
-              '짧은 샤워하기',
+              '15분간 샤워를 하면 180L 전후의 물을 사용해요!',
               true,
               '100코인',
             ),
+            _buildCard(context, '양치질 시 물컵 사용하기', Icons.check_circle_outline,
+                '칫솔질 후 컵 없이 30초동안 양치질을 하면 5L 정도의 물이 낭비돼요!', true, '100코인'),
             _buildCard(
               context,
-              '양치질을 할 때 컵에 물을 받아서 사용하세요.',
-              Icons.add_circle_outline,
-              '양치질 시 물컵 사용하기',
-              false,
-            ),
-            _buildCard(
-              context,
-              '세탁할 때 세탁물을 모아서 한 번에 세탁하세요.',
-              Icons.check_circle_outline,
-              '빨래 모아서 한 번에 하기',
-              true,
-              '100코인',
-            ),
-            _buildCard(
-              context,
-              '설거지를 할 때 물을 틀어 놓지 말고, 물을 받아서 사용하세요.',
-              Icons.check_circle_outline,
               '설거지 물 받아서 사용하기',
+              Icons.check_circle_outline,
+              '흐르는 물로 10분 동안 설거지하면 100L 물이 사용돼요! \n적절한 용량의 식기세척기를 사용해도 크게 절약할 수 있어요!',
               true,
               '100코인',
             ),
             _buildCard(
               context,
-              '누수 여부를 점검하고, 누수가 있다면 즉시 수리하세요.',
+              '빨래 모아서 한번에 하기',
               Icons.check_circle_outline,
-              '수도꼭지 점검하기',
+              '4인 가족 기준 하루 평균 세탁물은 하루 3Kg 정도에요. \n빨래를 3일치 모아서 빨면 경제적이에요!',
               true,
               '100코인',
             ),
             _buildCard(
               context,
-              '물 절약형 샤워 필터를 사용하여 물 사용량을 줄이세요.',
+              '절수형 샤워필터 사용하기',
               Icons.check_circle_outline,
-              '샤워 필터 사용하기',
+              '절수형 샤워헤드의 최대유량은 1분당 7L로 일반형의 절반 정도에요!',
+              true,
+              '100코인',
+            ),
+            
+            Container(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                '월간 미션',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+            ),
+
+            _buildCard(
+              context,
+              '양변기 수조에 1.5L 물병 넣기 ',
+              Icons.check_circle_outline,
+              '물병을 넣어놓으면 4인 가족 기준 하루 40L 가 절약돼요!',
+              true,
+              '100코인',
+            ),
+            _buildCard(
+              context,
+              '누수 여부 점검하기',
+              Icons.check_circle_outline,
+              '수도꼭지에서 1초에 두세 방울씩 물이 샌다고 가정했을 때 하루 65~100L의 물이 낭비돼요. \n만약 변기가 누수되면 더 많은 양의 물이 낭비돼요!',
               true,
               '100코인',
             ),
@@ -155,7 +179,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCard(BuildContext context, String title, IconData icon, String actionText, bool showCheckbox, [String? badge]) {
+  Widget _buildCard(BuildContext context, String title, IconData icon,
+      String actionText, bool showCheckbox,
+      [String? badge]) {
     return Container(
       color: Colors.white,
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
