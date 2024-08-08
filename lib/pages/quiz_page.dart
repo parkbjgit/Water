@@ -61,7 +61,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _selectRandomQuestions() {
-    Random random = new Random();
+    Random random = Random();
     while (selectedQuestions.length < 5) {
       int questionIndex = random.nextInt(quizzes.length);
       if (!selectedQuestions.contains(questionIndex)) {
@@ -137,9 +137,7 @@ class _QuizPageState extends State<QuizPage> {
     return CommonLayout(
       selectedIndex: 1,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('물 절약 퀴즈'),
-        ),
+        backgroundColor: Colors.blue.shade50,
         body: Stack(
           children: [
             AbsorbPointer(
@@ -149,15 +147,39 @@ class _QuizPageState extends State<QuizPage> {
                 children: [
                   if (quizzes.isNotEmpty &&
                       currentQuestionIndex < quizzes.length)
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        quizzes[selectedQuestions[currentQuestionIndex]][1],
-                        style: TextStyle(fontSize: 20),
-                        textAlign: TextAlign.center,
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: EdgeInsets.all(16.0),
+                      height: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10.0,
+                            spreadRadius: 1.0,
+                          ),
+                        ],
                       ),
-                    ),
-                  if (quizzes.isNotEmpty &&
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              '문제 ${currentQuestionIndex + 1} / 5',
+                              style: TextStyle(fontSize: 16, color: Colors.grey),
+                            ),
+                          ),
+                          SizedBox(height: 50),
+                          Text(
+                            quizzes[selectedQuestions[currentQuestionIndex]][1],
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 50),
+                          if (quizzes.isNotEmpty &&
                       currentQuestionIndex < quizzes.length)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -172,6 +194,10 @@ class _QuizPageState extends State<QuizPage> {
                         ),
                       ],
                     ),
+                        ],
+                      ),
+                    ),
+                  
                 ],
               ),
             ),
