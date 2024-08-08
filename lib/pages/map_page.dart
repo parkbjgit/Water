@@ -255,9 +255,9 @@ class _MapPageState extends State<MapPage> {
       selectedIndex: 3,
       child:
         Scaffold(
-      appBar: AppBar(
-        title: Text('지도 페이지'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('지도 페이지'),
+      // ),
       body: FlutterMap(
         mapController: _mapController,
         options: MapOptions(

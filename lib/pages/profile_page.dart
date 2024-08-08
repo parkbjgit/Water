@@ -1,5 +1,3 @@
-// lib/pages/profile_page.dart
-
 import 'package:flutter/material.dart';
 import 'common_layout.dart';
 import '../widgets/profile_card.dart';
@@ -9,7 +7,9 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonLayout(
       selectedIndex: 4,
-      child: Stack(
+      child: Scaffold(
+        backgroundColor: Colors.blue.shade50,
+        body: Stack(
         children: [
           Center(
             child: Column(
@@ -22,6 +22,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
+      )
     );
   }
 }
