@@ -26,6 +26,7 @@ dependencies:
   cloud_firestore: ^5.0.2
   firebase_auth: ^5.1.4
   google_sign_in: ^6.1.6
+  intl: ^0.17.0 # 날짜 형식 변경을 위한 패키지
 
 dev_dependencies:
   flutter_test:
