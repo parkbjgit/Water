@@ -1,88 +1,131 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: HomePage(),
+//     );
+//   }
+// }
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final itemHeight = (size.height - kToolbarHeight - 24) / 3;
-    final itemWidth = (size.width -40) / 3;
-    
     return Scaffold(
+      backgroundColor: Colors.blue.shade50, // 배경색을 여기에 설정
       appBar: AppBar(
-        title: const Text('홈', style: TextStyle(color: Colors.white)), // 타이틀 텍스트 색상을 흰색으로 설정
-        centerTitle: true, // 타이틀을 가운데 정렬
-        // 타이틀 텍스트의 색 변경
-        backgroundColor: const Color(0xFF1C1B1F), // AppBar 색상을 배경색과 맞춤
-
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text('2ulip', style: TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold)),
+        centerTitle: true,
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-        color: const Color(0xFF1C1B1F), // 배경색을 1C1B1F로 설정
-        child: Center(
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: itemWidth / itemHeight,
-              crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-            ),
-            itemCount: 9,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return _buildGridItem(
-                context, 
-                _gridItems[index]['icon'], 
-                _gridItems[index]['label'], 
-                _gridItems[index]['route'], 
-                _gridItems[index]['description'],
-              );
-            },
+      body: Column(
+        children: [
+          TabBar(
+            controller: _tabController,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            indicatorColor: Colors.black,
+            tabs: [
+              Tab(text: '새로운 매치'),
+              Tab(text: '히스토리'),
+            ],
           ),
-        ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                ListView(
+                  children: [
+                    _buildListItem('연애할 때, 얼마나 자주 연락하는 게 좋나요?'),
+                    _buildListItem('사랑하는 사람이 생긴다면, 결혼도 생각하게 될까요?'),
+                    _buildListItem('결혼/출산 후 여자의 커리어는 어떠야 한다고 생각하나요?'),
+                    _buildListItem('일과 가족 사이 우선순위는 어떻으면 하나요?'),
+                    _buildListItem('평소 새로운 지식, 기술을 배우는 자기계발을 따로 하고 있나요?'),
+                  ],
+                ),
+                Center(child: Text('히스토리 탭의 내용')),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text('SEARCH!free'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                    textStyle: TextStyle(fontSize: 16),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text('FEELING LUCKY!', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+              ],
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
+        ],
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
       ),
     );
   }
 
-  final List<Map<String, dynamic>> _gridItems = [
-    {'icon': Icons.assignment, 'label': '미션', 'route': '/mission', 'description': '일일미션을 수행하고 포인트를 받아가세요'},
-    {'icon': Icons.quiz, 'label': '퀴즈', 'route': '/quiz', 'description': '퀴즈를 풀고 포인트를 받아가세요'},
-    {'icon': Icons.local_florist, 'label': '가상 정원', 'route': '/garden', 'description': '나만의 나무를 키우세요'},
-    {'icon': Icons.store, 'label': '상점', 'route': '/reward', 'description': '포인트를 사용해 나무 키우기 아이템을 구매하세요'},
-    {'icon': Icons.water_damage, 'label': '물 사용량', 'route': '/water_usage', 'description': '오늘 물을 절약했는지 확인하세요'},
-    {'icon': Icons.map, 'label': '지도', 'route': '/map', 'description': '물 위험지수를 확인하세요'},
-    {'icon': Icons.leaderboard, 'label': '리더보드', 'route': '/leaderboard', 'description': '리더보드를 확인하세요'},
-    {'icon': Icons.login, 'label': '로그인', 'route': '/login', 'description': '로그인하세요'},
-    {'icon': Icons.person, 'label': '프로필', 'route': '/profile', 'description': '프로필을 확인하세요'},
-  ];
-
-  Widget _buildGridItem(BuildContext context, IconData icon, String label,
-      String route, String description) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushNamed(route);
-      },
-      child: Card(
-        color: Colors.grey[850], // 카드 배경색을 어두운 회색으로 설정
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        elevation: 5.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 30, color: Colors.white), // 아이콘 색상을 흰색으로 설정
-            const SizedBox(height: 5),
-            Text(label,
-                style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white)), // 텍스트 색상을 흰색으로 설정
-            const SizedBox(height: 5),
-            Text(description,
-                style: const TextStyle(fontSize: 10, color: Colors.white70),
-                textAlign: TextAlign.center), // 설명 텍스트 색상을 밝은 회색으로 설정
+  Widget _buildListItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
           ],
         ),
+        child: Text(text, style: TextStyle(fontSize: 16)),
       ),
     );
   }
