@@ -74,15 +74,134 @@ class _GardenPageState extends State<GardenPage> {
     showNextDialog();
   }
 
+  Future<void> _purchaseItem(int index) async {
+    final scoreManager = Provider.of<ScoreManager>(context, listen: false);
+    final itemData = Provider.of<ItemData>(context, listen: false);
+    if (scoreManager.totalPoints >= itemData.items[index].price) {
+      scoreManager.subtractPoints(itemData.items[index].price);
+      itemData.purchaseItem(index);
+      _showPurchaseSuccessDialog(itemData.items[index].name);
+    } else {
+      _showInsufficientPointsDialog();
+    }
+  }
+
+  void _showInsufficientPointsDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('포인트 부족'),
+        content: Text('포인트가 부족합니다.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('확인'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPurchaseSuccessDialog(String itemName) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('구매 완료'),
+        content: Text('$itemName을(를) 구매했습니다.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('확인'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showEvolveWarning(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('경고'),
+          content: const Text('진화하기 위해서는 더 많은 경험치가 필요합니다.'),
+          actions: [
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showNoEvolveItemWarning(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('경고'),
+          content: const Text('진화 아이템이 없습니다.'),
+          actions: [
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showMaxLevelWarning(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('경고'),
+          content: const Text('더 이상 진화할 수 없습니다.'),
+          actions: [
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _harvest() async {
+    setState(() {
+      _showHarvestAnimation = true;
+    });
+    await Future.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      Provider.of(context, listen: false).addApple();
+      Provider.of(context, listen: false).resetTree();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('사과를 1개 수확했습니다!'),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
       selectedIndex: 2,
       child: Scaffold(
         backgroundColor: Colors.blue[50],
-        // appBar: AppBar(
-        //   title: const Text('가상 정원'),
-        // ),
         body: Stack(
           children: [
             Column(
@@ -197,6 +316,8 @@ class _GardenPageState extends State<GardenPage> {
                     ],
                   ),
                 ),
+                const Divider(),
+                ShopSection(onPurchaseItem: _purchaseItem),
               ],
             ),
             if (_showHarvestAnimation)
@@ -266,78 +387,62 @@ class _GardenPageState extends State<GardenPage> {
       ],
     );
   }
+}
 
-  void _showEvolveWarning(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('경고'),
-          content: const Text('진화하기 위해서는 더 많은 경험치가 필요합니다.'),
-          actions: [
-            TextButton(
-              child: const Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+class ShopSection extends StatelessWidget {
+  final Function(int) onPurchaseItem;
+
+  ShopSection({required this.onPurchaseItem});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Consumer<ScoreManager>(
+            builder: (context, scoreManager, child) {
+              return Text(
+                '현재 포인트: ${scoreManager.totalPoints}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              );
+            },
+          ),
+          SizedBox(height: 10),
+          Text('상점',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(height: 10),
+          Consumer<ItemData>(
+            builder: (context, itemData, child) {
+              if (itemData == null || itemData.items.isEmpty) {
+                return Text('아이템이 없습니다.');
+              }
+
+              return Wrap(
+                spacing: 10,
+                children: List.generate(itemData.items.length, (index) {
+                  return Column(
+                    children: [
+                      IconButton(
+                        icon: Icon(itemData.items[index].icon, size: 32),
+                        onPressed: () {
+                          onPurchaseItem(index);
+                        },
+                      ),
+                      Text(
+                          '${itemData.items[index].name} (${itemData.items[index].quantity})',
+                          style: const TextStyle(fontSize: 14)),
+                      Text('${itemData.items[index].price} 포인트',
+                          style: const TextStyle(fontSize: 14)),
+                    ],
+                  );
+                }),
+              );
+            },
+          ),
+        ],
+      ),
     );
-  }
-
-  void _showNoEvolveItemWarning(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('경고'),
-          content: const Text('진화 아이템이 없습니다.'),
-          actions: [
-            TextButton(
-              child: const Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showMaxLevelWarning(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('경고'),
-          content: const Text('더 이상 진화할 수 없습니다.'),
-          actions: [
-            TextButton(
-              child: const Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _harvest() async {
-    setState(() {
-      _showHarvestAnimation = true;
-    });
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
-      Provider.of<ScoreManager>(context, listen: false).addApple();
-      Provider.of<TreeManager>(context, listen: false).resetTree();
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('사과를 1개 수확했습니다!'),
-      ));
-    }
   }
 }
