@@ -186,13 +186,25 @@ class _GardenPageState extends State<GardenPage> {
     setState(() {
       _showHarvestAnimation = true;
     });
+
     await Future.delayed(const Duration(seconds: 2));
+
     if (mounted) {
-      Provider.of(context, listen: false).addApple();
-      Provider.of(context, listen: false).resetTree();
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('사과를 1개 수확했습니다!'),
-      ));
+      final scoreManager = Provider.of<ScoreManager>(context, listen: false);
+      final treeManager = Provider.of<TreeManager>(context, listen: false);
+
+      scoreManager.addApple();
+      treeManager.resetTree();
+
+      setState(() {
+        _showHarvestAnimation = false; // 애니메이션을 다시 숨김
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('사과를 1개 수확했습니다!'),
+        ),
+      );
     }
   }
 
