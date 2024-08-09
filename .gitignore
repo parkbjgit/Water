@@ -73,3 +73,7 @@ desktop.ini
 
 # Linux related
 *.swp
+
+
+# assets related
+assets/
