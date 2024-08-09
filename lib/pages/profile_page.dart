@@ -4,6 +4,22 @@ import 'common_layout.dart';
 import '../widgets/profile_card.dart';
 import '../score_manager.dart';
 import '../user_score.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+Future<UserCredential> signInWithGoogle() async {
+  // Create a new provider
+  GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+
+  // Or use signInWithRedirect
+  //return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
+}
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -22,6 +38,14 @@ class ProfilePage extends StatelessWidget {
                   ProfileCard(),
                   SizedBox(height: 20),
                   Expanded(child: LeaderboardSection()), // 리더보드를 추가
+                  SizedBox(height: 20), // 버튼과 리더보드 사이에 간격을 추가
+                  ElevatedButton(
+                    onPressed: () {
+                      signInWithGoogle(); // 함수 호출
+                    },
+                    child: Text('Action Button'),
+                  ),
+                  SizedBox(height: 20), // 버튼 아래에 여유 공간 추가
                 ],
               ),
             ),
@@ -78,10 +102,14 @@ class _LeaderboardSectionState extends State<LeaderboardSection> {
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    leading: Text('${index + 1}', style: TextStyle(fontSize: 18)),
-                    title: Text(leaderboard[index].nickname, style: TextStyle(fontSize: 18)),
-                    subtitle: Text('Apples: ${leaderboard[index].apples}', style: TextStyle(fontSize: 14)),
-                    trailing: Text('${leaderboard[index].points} points', style: TextStyle(fontSize: 18)),
+                    leading:
+                        Text('${index + 1}', style: TextStyle(fontSize: 18)),
+                    title: Text(leaderboard[index].nickname,
+                        style: TextStyle(fontSize: 18)),
+                    subtitle: Text('Apples: ${leaderboard[index].apples}',
+                        style: TextStyle(fontSize: 14)),
+                    trailing: Text('${leaderboard[index].points} points',
+                        style: TextStyle(fontSize: 18)),
                   ),
                 );
               },
@@ -108,7 +136,8 @@ class _LeaderboardSectionState extends State<LeaderboardSection> {
     );
   }
 
-  Widget _buildPodiumPlace(UserScore user, int place, Color color, double height) {
+  Widget _buildPodiumPlace(
+      UserScore user, int place, Color color, double height) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
