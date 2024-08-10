@@ -23,6 +23,10 @@ Future<UserCredential> signInWithGoogle() async {
   //return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
 }
 
+void a() {
+  print(FirebaseAuth.instance.currentUser!);
+}
+
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,8 @@ class ProfilePage extends StatelessWidget {
                   SizedBox(height: 20), // 버튼과 리더보드 사이에 간격을 추가
                   ElevatedButton(
                     onPressed: () {
-                      signInWithGoogle(); // 함수 호출
+                      signInWithGoogle();
+                      a(); // 함수 호출
                     },
                     child: Text('Action Button'),
                   ),

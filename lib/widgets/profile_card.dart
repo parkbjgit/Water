@@ -12,20 +12,42 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
-  final userListRef = FirebaseFirestore.instance
-      .collection("users")
-      .withConverter<User>(
-        fromFirestore: (snapshot, _) => User.fromJson(snapshot.data()!),
-        toFirestore: (user, _) => user.toJson(),
-      );
+  final userListRef =
+      FirebaseFirestore.instance.collection("users").withConverter<User>(
+            fromFirestore: (snapshot, _) => User.fromJson(snapshot.data()!),
+            toFirestore: (user, _) => user.toJson(),
+          );
 
   Future<String?> _getNickname() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('nickname');
   }
 
+  var db = FirebaseFirestore.instance;
+
+  void getUserInfo(String userEmail) {
+    var b = db.collection("users").where("email", isEqualTo: userEmail).get();
+    var a =
+        db.collection("users").where("userID", isEqualTo: "User1").get().then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          print('${docSnapshot.id} => ${docSnapshot.data()}');
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+    // print(b.then((querySnapshot) {
+    //   print(querySnapshot.docs[0]);
+    // }));
+    // print(b.then((querySnapshot) {
+    //   print(querySnapshot.docs[0].data()['']);
+    // }));
+  }
+
   @override
   Widget build(BuildContext context) {
+    getUserInfo("park97111997@gmail.com");
     return Consumer<TreeManager>(
       builder: (context, treeManager, child) {
         return Card(
