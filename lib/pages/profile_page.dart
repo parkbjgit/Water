@@ -4,8 +4,10 @@ import 'common_layout.dart';
 import '../widgets/profile_card.dart';
 import '../score_manager.dart';
 import '../user_score.dart';
+// import '../models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<UserCredential> signInWithGoogle() async {
   // Create a new provider
