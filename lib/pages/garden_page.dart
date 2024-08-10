@@ -33,14 +33,15 @@ class _GardenPageState extends State<GardenPage> {
     }
   }
 
+// TODO: 수정
   void _showIntroDialogs() {
     List<String> messages = [
       '가상 정원 페이지에 오신 것을 환영합니다!',
       '처음에는 씨앗을 심고, 상점에서 물, 비료, 영양제 아이템을 구매하여 사용해 보세요.',
       '아이템을 사용하여 경험치를 쌓고, 경험치 500마다 진화 아이템을 사용해 나무를 성장시키세요.',
-      '물 아이템: 경험치 +10\n비료 아이템: 경험치 +20\n영양제 아이템: 경험치 +50',
-      '경험치가 500, 1000, 1500, 2000, 2500, 3000에 도달할 때마다 진화 아이템을 사용하여 나무를 진화시킬 수 있습니다.',
-      '레벨 7에 도달하면 나무를 수확할 수 있습니다.'
+      '물 아이템: 경험치 +100\n비료 아이템: 경험치 +250\n영양제 아이템: 경험치 +500',
+      '경험치가 500에 도달할 때마다 진화 아이템을 사용하여 나무를 진화시킬 수 있습니다.',
+      '레벨 7에 도달하면 사과를 수확할 수 있습니다.'
     ];
 
     int currentMessageIndex = 0;
@@ -122,53 +123,13 @@ class _GardenPageState extends State<GardenPage> {
     );
   }
 
-  void _showEvolveWarning(BuildContext context) {
+  void _showWarning(BuildContext context, String warning) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('경고'),
-          content: const Text('진화하기 위해서는 더 많은 경험치가 필요합니다.'),
-          actions: [
-            TextButton(
-              child: const Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showNoEvolveItemWarning(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('경고'),
-          content: const Text('진화 아이템이 없습니다.'),
-          actions: [
-            TextButton(
-              child: const Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showMaxLevelWarning(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('경고'),
-          content: const Text('더 이상 진화할 수 없습니다.'),
+          content: Text(warning),
           actions: [
             TextButton(
               child: const Text('확인'),
@@ -248,32 +209,38 @@ class _GardenPageState extends State<GardenPage> {
                                 width: 150,
                               ),
                               const SizedBox(height: 16),
-                              Text('경험치: ${treeManager.tree.experience} / 3500',
+                              Text('경험치: ${treeManager.tree.experience} / 500',
                                   style: const TextStyle(fontSize: 16)),
                               const SizedBox(height: 16),
                               Container(
                                 width: 250,
                                 child: LinearProgressIndicator(
-                                  value: treeManager.tree.experience / 3500,
+                                  value: treeManager.tree.experience / 500,
                                   minHeight: 16,
                                 ),
                               ),
                               const SizedBox(height: 16),
                               ElevatedButton(
                                 onPressed: () {
-                                  if (treeManager.tree.level >= 7) {
-                                    _showMaxLevelWarning(context);
-                                  } else if (treeManager.tree.experience >=
-                                          (treeManager.tree.level * 500) &&
-                                      evolveItem.quantity > 0) {
-                                    treeManager.evolve();
-                                    itemData.useItem('진화!');
-                                  } else {
-                                    if (evolveItem.quantity == 0) {
-                                      _showNoEvolveItemWarning(context);
+                                  if (treeManager.tree.isSeed == true) {
+                                    if (treeManager.tree.level >= 7) {
+                                      _showWarning(context, "최고 레벨7에 도달했습니다. ");
+                                    } else if (treeManager.tree.experience >=
+                                            500 &&
+                                        evolveItem.quantity > 0) {
+                                      // treeManager.evolve();
+                                      treeManager.tree.evolveWithItem();
+                                      itemData.useItem('진화!');
                                     } else {
-                                      _showEvolveWarning(context);
+                                      if (evolveItem.quantity == 0) {
+                                        _showWarning(context, "진화! 아이템이 없습니다.");
+                                      } else {
+                                        _showWarning(
+                                            context, "진화를 하기위한 경험치가 부족합니다.");
+                                      }
                                     }
+                                  } else {
+                                    _showWarning(context, "씨앗을 아직 심지않았습니다.");
                                   }
                                 },
                                 child: const Text('진화하기',
@@ -312,12 +279,12 @@ class _GardenPageState extends State<GardenPage> {
                               _buildItemButton(
                                   context, itemData, '씨앗', Icons.grass, 0,
                                   isSeed: true),
+                              _buildItemButton(context, itemData, '물',
+                                  Icons.water_drop, 100),
                               _buildItemButton(
-                                  context, itemData, '물', Icons.water_drop, 10),
-                              _buildItemButton(
-                                  context, itemData, '비료', Icons.eco, 20),
+                                  context, itemData, '비료', Icons.eco, 250),
                               _buildItemButton(context, itemData, '영양제',
-                                  Icons.local_florist, 50),
+                                  Icons.local_florist, 500),
                               _buildItemButton(context, itemData, '진화!',
                                   Icons.auto_awesome, 0,
                                   isEvolve: true),
@@ -367,31 +334,62 @@ class _GardenPageState extends State<GardenPage> {
           onPressed: item.quantity > 0
               ? () {
                   if (isSeed) {
-                    treeManager.plantSeed();
-                  } else if (isEvolve) {
-                    if (treeManager.tree.level >= 7) {
-                      _showMaxLevelWarning(context);
-                    } else if (treeManager.tree.experience >=
-                            (treeManager.tree.level * 500) &&
-                        item.quantity > 0) {
-                      treeManager.evolveWithItem();
-                      itemData.useItem(itemName);
+                    //TODO 씨앗 아이템인지 아닌지
+                    if (treeManager.tree.isSeed == true) {
+                      _showWarning(context, '씨앗이 이미 심어져있습니다.');
+                      print("씨앗이 이미 있음");
                     } else {
-                      if (item.quantity == 0) {
-                        _showNoEvolveItemWarning(context);
+                      treeManager.plantSeed();
+                      itemData.useItem(itemName);
+                    }
+                  } else if (isEvolve) {
+                    //진화 아이템인지 아닌지
+                    if (treeManager.tree.isSeed == false) {
+                      print("씨앗을 안심고 진화하려고함");
+
+                      _showWarning(context, "씨앗을 아직 심지않았습니다.");
+                    } //씨앗을 안심엇는데 진화아이템을 누르면
+                    else {
+                      if (treeManager.tree.level >= 7) {
+                        print("이미 레벨이 7 더이상 진화 못함");
+                        _showWarning(context, "최고 레벨7에 도달했습니다. ");
+                      } else if (treeManager.tree.experience >= 500 &&
+                          item.quantity > 0) {
+                        //개수가 어차피 0이상이었는데 쓸 필요X
+                        treeManager.evolveWithItem();
+                        itemData.useItem(itemName);
                       } else {
-                        _showEvolveWarning(context);
+                        if (item.quantity == 0) {
+                          //이거도 어차피 0이상으로 들어온건데 쓸 필요 X
+                          print("아이템 없는데 사용하려함");
+                          _showWarning(context, "$itemName 아이템이 없습니다.");
+                        } else {
+                          _showWarning(context, "진화를 하기위한 경험치가 부족합니다.");
+                        }
                       }
                     }
                   } else {
-                    treeManager.addExperience(exp);
-                    itemData.useItem(itemName);
+                    //else 자체가 경험치 아이템이면
+                    if (treeManager.tree.isSeed == false) {
+                      _showWarning(context, "씨앗을 아직 심지않았습니다.");
+                    } //이것도 씨앗 안심어져있다고 표시
+                    else {
+                      if ((treeManager.tree.experience) >= 500) {
+                        print("단계별 경험치 초과");
+                        _showWarning(context, "경험치를 초과달성했습니다."); // 단계별 경험치 초과
+                      } else {
+                        treeManager.addExperience(exp);
+                        itemData.useItem(itemName);
+                      }
+                    }
                   }
                 }
               : () {
-                  if (isEvolve) {
-                    _showNoEvolveItemWarning(context);
-                  }
+                  // if (isEvolve) {
+                  //   _showWarning(context, "$itemName 아이템이 없습니다."); //TODO 아이템 없음으로 바꾸기
+                  // }
+                  _showWarning(
+                      context, "$itemName 아이템이 없습니다."); //TODO 아이템 없음으로 바꾸기
                 },
         ),
         Text('$itemName (${item.quantity})',
@@ -442,8 +440,7 @@ class ShopSection extends StatelessWidget {
                           onPurchaseItem(index);
                         },
                       ),
-                      Text(
-                          '${itemData.items[index].name} (${itemData.items[index].quantity})',
+                      Text('${itemData.items[index].name}',
                           style: const TextStyle(fontSize: 14)),
                       Text('${itemData.items[index].price} 포인트',
                           style: const TextStyle(fontSize: 14)),

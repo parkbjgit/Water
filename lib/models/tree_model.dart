@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Tree {
+  bool isSeed; //TODO 씨앗을 심었는지 안심었는지
   int experience;
   int level;
   List<bool> evolutionStages;
 
-  Tree({this.experience = 0, this.level = 0, List<bool>? evolutionStages})
-      : evolutionStages = evolutionStages ?? [false, false, false, false, false, false];
+  Tree(
+      {this.isSeed = false,
+      this.experience = 0,
+      this.level = 0,
+      List<bool>? evolutionStages})
+      : evolutionStages =
+            evolutionStages ?? [false, false, false, false, false, false];
 
   void addExperience(int exp) {
     experience += exp;
-    if (experience >= 3500) {
-      experience = 3500;
-    }
-  }
-
-  void evolve() {
-    if (experience >= (level + 1) * 500 && level < 7) {
-      level++;
+    if (experience >= 500) {
+      experience = 500;
     }
   }
 
@@ -27,21 +27,27 @@ class Tree {
       if (experience >= 500 && !evolutionStages[0]) {
         level++;
         evolutionStages[0] = true;
-      } else if (experience >= 1000 && !evolutionStages[1]) {
+        experience = 0;
+      } else if (experience >= 500 && !evolutionStages[1]) {
         level++;
         evolutionStages[1] = true;
-      } else if (experience >= 1500 && !evolutionStages[2]) {
+        experience = 0;
+      } else if (experience >= 500 && !evolutionStages[2]) {
         level++;
         evolutionStages[2] = true;
-      } else if (experience >= 2000 && !evolutionStages[3]) {
+        experience = 0;
+      } else if (experience >= 500 && !evolutionStages[3]) {
         level++;
         evolutionStages[3] = true;
-      } else if (experience >= 2500 && !evolutionStages[4]) {
+        experience = 0;
+      } else if (experience >= 500 && !evolutionStages[4]) {
         level++;
         evolutionStages[4] = true;
-      } else if (experience >= 3000 && !evolutionStages[5]) {
+        experience = 0;
+      } else if (experience >= 500 && !evolutionStages[5]) {
         level++;
         evolutionStages[5] = true;
+        experience = 0;
       }
     }
   }
@@ -55,6 +61,7 @@ class Tree {
   void plantSeed() {
     level = 1;
     experience = 0;
+    isSeed = true;
   }
 }
 
@@ -65,6 +72,7 @@ class TreeManager extends ChangeNotifier {
 
   Future<void> loadTree() async {
     final prefs = await SharedPreferences.getInstance();
+    _tree.isSeed = prefs.getBool('isSeed') ?? false;
     _tree.experience = prefs.getInt('treeExperience') ?? 0;
     _tree.level = prefs.getInt('treeLevel') ?? 0;
     _tree.evolutionStages = [
@@ -80,6 +88,7 @@ class TreeManager extends ChangeNotifier {
 
   Future<void> saveTree() async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSeed', _tree.isSeed);
     await prefs.setInt('treeExperience', _tree.experience);
     await prefs.setInt('treeLevel', _tree.level);
     await prefs.setBool('evolutionStage0', _tree.evolutionStages[0]);
@@ -92,12 +101,6 @@ class TreeManager extends ChangeNotifier {
 
   void addExperience(int exp) {
     _tree.addExperience(exp);
-    saveTree();
-    notifyListeners();
-  }
-
-  void evolve() {
-    _tree.evolve();
     saveTree();
     notifyListeners();
   }

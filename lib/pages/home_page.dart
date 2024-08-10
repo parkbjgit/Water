@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:provider/provider.dart';
+import '/score_manager.dart';
 import 'common_layout.dart';
 
 class HomePage extends StatefulWidget {
@@ -286,7 +287,10 @@ class _HomePageState extends State<HomePage> {
                 onChanged: (bool? value) {
                   setState(() {
                     checkboxStates[title] = value ?? false;
+
                     if (value == true) {
+                      final scoreManager = Provider.of<ScoreManager>(context, listen:false);
+                      scoreManager.addPoints(points);
                       _showConfetti(points);
                     }
                   });
