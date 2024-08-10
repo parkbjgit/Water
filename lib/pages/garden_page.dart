@@ -201,7 +201,6 @@ class _GardenPageState extends State<GardenPage> {
       },
     );
   }
-  
 
   void _harvest() async {
     setState(() {
@@ -282,19 +281,25 @@ class _GardenPageState extends State<GardenPage> {
                               const SizedBox(height: 16),
                               ElevatedButton(
                                 onPressed: () {
-                                  if (treeManager.tree.level >= 7) {
-                                    _showMaxLevelWarning(context);
-                                  } else if (treeManager.tree.experience >=
-                                          (treeManager.tree.level * 500) &&
-                                      evolveItem.quantity > 0) {
-                                    treeManager.evolve();
-                                    itemData.useItem('진화!');
-                                  } else {
-                                    if (evolveItem.quantity == 0) {
-                                      _showWarning(context, "진화아이템이 없습니다.");
+                                  if (treeManager.tree.isSeed == true) {
+                                    if (treeManager.tree.level >= 7) {
+                                      _showWarning(context, "최고 레벨7에 도달했습니다. ");
+                                    } else if (treeManager.tree.experience >=
+                                            (treeManager.tree.level * 500) &&
+                                        evolveItem.quantity > 0) {
+                                      // treeManager.evolve();
+                                      treeManager.tree.evolveWithItem();
+                                      itemData.useItem('진화!');
                                     } else {
-                                      _showEvolveWarning(context);
+                                      if (evolveItem.quantity == 0) {
+                                        _showWarning(context, "진화! 아이템이 없습니다.");
+                                      } else {
+                                        _showWarning(
+                                            context, "진화를 하기위한 경험치가 부족합니다.");
+                                      }
                                     }
+                                  } else {
+                                    _showWarning(context, "씨앗을 아직 심지않았습니다.");
                                   }
                                 },
                                 child: const Text('진화하기',
@@ -333,12 +338,12 @@ class _GardenPageState extends State<GardenPage> {
                               _buildItemButton(
                                   context, itemData, '씨앗', Icons.grass, 0,
                                   isSeed: true),
+                              _buildItemButton(context, itemData, '물',
+                                  Icons.water_drop, 100),
                               _buildItemButton(
-                                  context, itemData, '물', Icons.water_drop, 10),
-                              _buildItemButton(
-                                  context, itemData, '비료', Icons.eco, 20),
+                                  context, itemData, '비료', Icons.eco, 25),
                               _buildItemButton(context, itemData, '영양제',
-                                  Icons.local_florist, 50),
+                                  Icons.local_florist, 500),
                               _buildItemButton(context, itemData, '진화!',
                                   Icons.auto_awesome, 0,
                                   isEvolve: true),
@@ -389,21 +394,19 @@ class _GardenPageState extends State<GardenPage> {
               ? () {
                   if (isSeed) {
                     //TODO 씨앗 아이템인지 아닌지
-                    if(treeManager.tree.isSeed == true){
+                    if (treeManager.tree.isSeed == true) {
                       _showWarning(context, '씨앗이 이미 심어져있습니다.');
-                      print("씨앗이 이미 있음");         
-                    }
-                    else{
+                      print("씨앗이 이미 있음");
+                    } else {
                       treeManager.plantSeed();
                       itemData.useItem(itemName);
                     }
-                    
                   } else if (isEvolve) {
                     //진화 아이템인지 아닌지
                     if (treeManager.tree.isSeed == false) {
                       print("씨앗을 안심고 진화하려고함");
-                      
-                      _showWarning(context,"씨앗을 아직 심지않았습니다.");
+
+                      _showWarning(context, "씨앗을 아직 심지않았습니다.");
                     } //씨앗을 안심엇는데 진화아이템을 누르면
                     else {
                       if (treeManager.tree.level >= 7) {
@@ -419,22 +422,22 @@ class _GardenPageState extends State<GardenPage> {
                         if (item.quantity == 0) {
                           //이거도 어차피 0이상으로 들어온건데 쓸 필요 X
                           print("아이템 없는데 사용하려함");
-                          _showWarning(context,"$itemName 아이템이 없습니다.");
+                          _showWarning(context, "$itemName 아이템이 없습니다.");
                         } else {
-                          _showWarning(context,"진화를 하기위한 경험치가 부족합니다.");
+                          _showWarning(context, "진화를 하기위한 경험치가 부족합니다.");
                         }
                       }
                     }
                   } else {
                     //else 자체가 경험치 아이템이면
                     if (treeManager.tree.isSeed == false) {
-                      _showWarning(context,"씨앗을 아직 심지않았습니다.");
+                      _showWarning(context, "씨앗을 아직 심지않았습니다.");
                     } //이것도 씨앗 안심어져있다고 표시
                     else {
                       if ((treeManager.tree.experience) >=
                           (treeManager.tree.level * 500)) {
                         print("단계별 경험치 초과");
-                        _showWarning(context,"경험치를 초과달성했습니다."); // 단계별 경험치 초과
+                        _showWarning(context, "경험치를 초과달성했습니다."); // 단계별 경험치 초과
                       } else {
                         treeManager.addExperience(exp);
                         itemData.useItem(itemName);
@@ -446,7 +449,8 @@ class _GardenPageState extends State<GardenPage> {
                   // if (isEvolve) {
                   //   _showWarning(context, "$itemName 아이템이 없습니다."); //TODO 아이템 없음으로 바꾸기
                   // }
-                  _showWarning(context, "$itemName 아이템이 없습니다."); //TODO 아이템 없음으로 바꾸기
+                  _showWarning(
+                      context, "$itemName 아이템이 없습니다."); //TODO 아이템 없음으로 바꾸기
                 },
         ),
         Text('$itemName (${item.quantity})',
