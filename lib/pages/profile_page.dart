@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'common_layout.dart';
@@ -23,11 +24,44 @@ Future<UserCredential> signInWithGoogle() async {
   //return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
 }
 
-void a() {
-  print(FirebaseAuth.instance.currentUser!);
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class ProfilePage extends StatelessWidget {
+class _ProfilePageState extends State<ProfilePage> {
+  String nickname = 'Guest'; // 처음에는 "Guest" 닉네임을 표시
+
+  void updateNickname(String newNickname) {
+    setState(() {
+      nickname = newNickname;
+    });
+  }
+
+  // 로그인 하고 나서 이부분
+  var db = FirebaseFirestore.instance;
+  var userData = {};
+
+  void getUserInfo(String userEmail) {
+    var a =
+        db.collection("users").where("email", isEqualTo: userEmail).get().then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          print('${docSnapshot.id} => ${docSnapshot.data()}');
+          docSnapshot.data().forEach((key, value) {
+            userData[key] = value;
+            // 여기에 데이터 저장하고
+            // 불러오기
+          });
+          print(userData["userName"]);
+          updateNickname(userData['userName']);
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
@@ -41,16 +75,21 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: 20),
-                  ProfileCard(),
+                  ProfileCard(nickname: nickname),
                   SizedBox(height: 20),
                   Expanded(child: LeaderboardSection()), // 리더보드를 추가
                   SizedBox(height: 20), // 버튼과 리더보드 사이에 간격을 추가
                   ElevatedButton(
                     onPressed: () {
-                      signInWithGoogle();
-                      a(); // 함수 호출
+                      signInWithGoogle().then((_) {
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          getUserInfo(
+                              FirebaseAuth.instance.currentUser!.email!);
+                        }
+                      });
+                      // a(); // 함수 호출
                     },
-                    child: Text('Action Button'),
+                    child: Text(nickname),
                   ),
                   SizedBox(height: 20), // 버튼 아래에 여유 공간 추가
                 ],
