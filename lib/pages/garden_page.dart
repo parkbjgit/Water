@@ -368,6 +368,7 @@ class _GardenPageState extends State<GardenPage> {
               ? () {
                   if (isSeed) {
                     treeManager.plantSeed();
+                    itemData.useItem(itemName);
                   } else if (isEvolve) {
                     if (treeManager.tree.level >= 7) {
                       _showMaxLevelWarning(context);
@@ -443,7 +444,7 @@ class ShopSection extends StatelessWidget {
                         },
                       ),
                       Text(
-                          '${itemData.items[index].name} (${itemData.items[index].quantity})',
+                          '${itemData.items[index].name}',
                           style: const TextStyle(fontSize: 14)),
                       Text('${itemData.items[index].price} 포인트',
                           style: const TextStyle(fontSize: 14)),
