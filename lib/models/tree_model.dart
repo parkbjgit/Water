@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Tree {
+  bool isSeed;      //TODO 씨앗을 심었는지 안심었는지
   int experience;
   int level;
   List<bool> evolutionStages;
 
-  Tree({this.experience = 0, this.level = 0, List<bool>? evolutionStages})
+  Tree({this.isSeed=false, this.experience = 0, this.level = 0, List<bool>? evolutionStages})
       : evolutionStages = evolutionStages ?? [false, false, false, false, false, false];
 
   void addExperience(int exp) {
@@ -55,6 +56,7 @@ class Tree {
   void plantSeed() {
     level = 1;
     experience = 0;
+    isSeed=true;
   }
 }
 
@@ -65,6 +67,7 @@ class TreeManager extends ChangeNotifier {
 
   Future<void> loadTree() async {
     final prefs = await SharedPreferences.getInstance();
+    _tree.isSeed = prefs.getBool('isSeed') ?? false;
     _tree.experience = prefs.getInt('treeExperience') ?? 0;
     _tree.level = prefs.getInt('treeLevel') ?? 0;
     _tree.evolutionStages = [
@@ -80,6 +83,7 @@ class TreeManager extends ChangeNotifier {
 
   Future<void> saveTree() async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSeed',_tree.isSeed);
     await prefs.setInt('treeExperience', _tree.experience);
     await prefs.setInt('treeLevel', _tree.level);
     await prefs.setBool('evolutionStage0', _tree.evolutionStages[0]);
