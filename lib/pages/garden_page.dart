@@ -182,6 +182,27 @@ class _GardenPageState extends State<GardenPage> {
     );
   }
 
+  void _showWarning(BuildContext context, String warning) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('경고'),
+          content: Text(warning),
+          actions: [
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
+
   void _harvest() async {
     setState(() {
       _showHarvestAnimation = true;
@@ -270,7 +291,7 @@ class _GardenPageState extends State<GardenPage> {
                                     itemData.useItem('진화!');
                                   } else {
                                     if (evolveItem.quantity == 0) {
-                                      _showNoEvolveItemWarning(context);
+                                      _showWarning(context, "진화아이템이 없습니다.");
                                     } else {
                                       _showEvolveWarning(context);
                                     }
@@ -367,32 +388,65 @@ class _GardenPageState extends State<GardenPage> {
           onPressed: item.quantity > 0
               ? () {
                   if (isSeed) {
-                    treeManager.plantSeed();
-                    itemData.useItem(itemName);
-                  } else if (isEvolve) {
-                    if (treeManager.tree.level >= 7) {
-                      _showMaxLevelWarning(context);
-                    } else if (treeManager.tree.experience >=
-                            (treeManager.tree.level * 500) &&
-                        item.quantity > 0) {
-                      treeManager.evolveWithItem();
+                    //TODO 씨앗 아이템인지 아닌지
+                    if(treeManager.tree.isSeed == true){
+                      _showWarning(context, '씨앗이 이미 심어져있습니다.');
+                      print("씨앗이 이미 있음");         
+                    }
+                    else{
+                      treeManager.plantSeed();
                       itemData.useItem(itemName);
-                    } else {
-                      if (item.quantity == 0) {
-                        _showNoEvolveItemWarning(context);
+                    }
+                    
+                  } else if (isEvolve) {
+                    //진화 아이템인지 아닌지
+                    if (treeManager.tree.isSeed == false) {
+                      print("씨앗을 안심고 진화하려고함");
+                      
+                      _showWarning(context,"씨앗을 아직 심지않았습니다.");
+                    } //씨앗을 안심엇는데 진화아이템을 누르면
+                    else {
+                      if (treeManager.tree.level >= 7) {
+                        print("이미 레벨이 7 더이상 진화 못함");
+                        _showWarning(context, "최고 레벨7에 도달했습니다. ");
+                      } else if (treeManager.tree.experience >=
+                              (treeManager.tree.level * 500) &&
+                          item.quantity > 0) {
+                        //개수가 어차피 0이상이었는데 쓸 필요X
+                        treeManager.evolveWithItem();
+                        itemData.useItem(itemName);
                       } else {
-                        _showEvolveWarning(context);
+                        if (item.quantity == 0) {
+                          //이거도 어차피 0이상으로 들어온건데 쓸 필요 X
+                          print("아이템 없는데 사용하려함");
+                          _showWarning(context,"$itemName 아이템이 없습니다.");
+                        } else {
+                          _showWarning(context,"진화를 하기위한 경험치가 부족합니다.");
+                        }
                       }
                     }
                   } else {
-                    treeManager.addExperience(exp);
-                    itemData.useItem(itemName);
+                    //else 자체가 경험치 아이템이면
+                    if (treeManager.tree.isSeed == false) {
+                      _showWarning(context,"씨앗을 아직 심지않았습니다.");
+                    } //이것도 씨앗 안심어져있다고 표시
+                    else {
+                      if ((treeManager.tree.experience) >=
+                          (treeManager.tree.level * 500)) {
+                        print("단계별 경험치 초과");
+                        _showWarning(context,"경험치를 초과달성했습니다."); // 단계별 경험치 초과
+                      } else {
+                        treeManager.addExperience(exp);
+                        itemData.useItem(itemName);
+                      }
+                    }
                   }
                 }
               : () {
-                  if (isEvolve) {
-                    _showNoEvolveItemWarning(context);
-                  }
+                  // if (isEvolve) {
+                  //   _showWarning(context, "$itemName 아이템이 없습니다."); //TODO 아이템 없음으로 바꾸기
+                  // }
+                  _showWarning(context, "$itemName 아이템이 없습니다."); //TODO 아이템 없음으로 바꾸기
                 },
         ),
         Text('$itemName (${item.quantity})',
@@ -443,8 +497,7 @@ class ShopSection extends StatelessWidget {
                           onPurchaseItem(index);
                         },
                       ),
-                      Text(
-                          '${itemData.items[index].name}',
+                      Text('${itemData.items[index].name}',
                           style: const TextStyle(fontSize: 14)),
                       Text('${itemData.items[index].price} 포인트',
                           style: const TextStyle(fontSize: 14)),
