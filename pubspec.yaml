@@ -18,7 +18,8 @@ dependencies:
   lottie: ^3.1.2
   shared_preferences: ^2.0.6
   provider: ^6.0.0
-  flutter_map: ^7.0.2
+  flutter_map: ^6.0.1
+  flutter_map_cancellable_tile_provider: ^2.0.0
   latlong2: ^0.9.1
   csv: ^5.0.0
   geolocator: ^8.2.1

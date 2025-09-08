@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
 import 'package:geolocator/geolocator.dart'; // geolocator 패키지 임포트
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -271,7 +272,7 @@ class _MapPageState extends State<MapPage> {
         children: [
           TileLayer(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
+            // tileProvider: CancellableNetworkTileProvider(),
           ),
           PolygonLayer(
             polygons: _polygons,
